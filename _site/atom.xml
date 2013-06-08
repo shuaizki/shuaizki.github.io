@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Tom Preston-Werner</title>
+ <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
+ <link href="http://tom.preston-werner.com/"/>
+ <updated>2013-06-05T13:41:13+08:00</updated>
+ <id>http://tom.preston-werner.com/</id>
+ <author>
+   <name>Tom Preston-Werner</name>
+   <email>tom@mojombo.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>本月书单</title>
+   <link href="http://tom.preston-werner.com/2013/06/05/booklist-of-June.html"/>
+   <updated>2013-06-05T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/06/05/booklist-of-June</id>
+   <content type="html">&lt;h2&gt;本月书单&lt;/h2&gt;
+
+&lt;p&gt;1、中国国民性演变历程&lt;/p&gt;
+
+&lt;h2&gt;&lt;img src=&quot;http://img5.douban.com/lpic/s26381229.jpg&quot; alt=&quot;中国国民性演变历程&quot; /&gt;&lt;/h2&gt;
+
+&lt;p&gt;2、Hadoop技术内幕-深入解析hadoop common和hdfs架构设计与实现原理&lt;/p&gt;
+
+&lt;h2&gt;&lt;img src=&quot;http://img3.douban.com/lpic/s26376893.jpg&quot; alt=&quot;&quot; /&gt;&lt;/h2&gt;
+
+&lt;p&gt;3、高效能人士的七个习惯&lt;br/&gt;
+&lt;img src=&quot;http://img3.douban.com/lpic/s1152683.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ 
+</feed>
