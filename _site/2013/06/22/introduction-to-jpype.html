@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+   <title>Jpype的一些事儿</title>
+   <meta name="author" content="shuaizki" />
+   <!--link href="http://feeds.feedburner.com/tom-preston-werner" rel="alternate" title="Tom Preston-Werner" type="application/atom+xml" /-->
+   <meta name="readability-verification" content="QCzSs992GxmRYRKVpPeZ6LE2tS8aYKxsSSQKV8YM"/>
+
+   <!-- syntax highlighting CSS -->
+   <link rel="stylesheet" href="/css/syntax.css" type="text/css" />
+
+   <!-- Homepage CSS -->
+   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+
+   <!-- Typekit -->
+   <script type="text/javascript" src="http://use.typekit.com/jpd0pfm.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+
+<!-- ClickTale Top part -->
+<script type="text/javascript">
+var WRInitTime=(new Date()).getTime();
+</script>
+<!-- ClickTale end of Top part -->
+
+<div class="site">
+  <div class="title">
+    <a href="/">shuaizki</a>
+    <a class="extra" href="/">home</a>
+  </div>
+  
+  <div id="post">
+<h1>Jpype的一些事儿</h1>
+
+<p>Jpype提供了python访问java代码的能力，但是实现上不同于Jython语言（没错，这货是门语言），Jpype只是一个库。<br/>
+由于有一个移植小工具的需求，于是就用到了Jpype，琢磨了一番之后，深感方便。下面就简单的讲讲</p>
+
+<h2>how to use ?</h2>
+
+<p>首先当然是安装啦，从<a href="http://jpype.sourceforge.net">官网</a>上下载， 解压，然后就。。。当当当当！可以用了！</p>
+
+<h4>start a jvm</h4>
+
+<p>Jpype的核心包是jpype， jpype是从jvm的native层进行调用的，首先要做的操作是打开jvm虚拟机</p>
+
+<pre><code>from jpype import *
+
+jvmPath = getDefaultJVMPath()
+
+startJVM(jvmPath)
+shutdownJVM()
+</code></pre>
+
+<p>   这里的jvmPath是能够自己设置的, getDefaultJVMPath()给出的只是当前系统下默认的jvmpath, 以os x为例， 可以看到给出的默认getDefaultJVMPath()函数是</p>
+
+<pre><code>def getDefaultJVMPath() :
+# on darwin, the JVM is always in the same location it seems ...
+return '/System/Library/Frameworks/JavaVM.framework/JavaVM'
+</code></pre>
+
+<p>  没错，我要讲的就是那句贱贱的注释传达的意思，至于linux和window平台，稍微复杂一点，所以自行设置还是比较靠谱的<br/>
+  只是开关虚拟机当然没什么意思了，而且我们用Jpype的目的并不是"hello, world",所以我们直接跳过hello world的步骤，直接开始学着调用你自己的java代码</p>
+
+<h4>call your java code</h4>
+
+<p>   你有两种方式放置你要调用的java代码，直接编译，把所有的东西放在一个文件夹里，或者使用一个jar包，总之这个自己来控制吧。下面直接假设你所有的东西都在一个叫temp.jar的java的jar包里了<br/>
+   Jpype比较弱的一点是要你自己指定classpath, 我们假设temp.jar就在当前的文件夹下，于是classpath肯定会是这样的</p>
+
+<pre><code>ext_classpath = os.path.join(os.path.abspath('.'), 'temp.jar')
+</code></pre>
+
+<p>   然后我们就可以打开虚拟机了</p>
+
+<pre><code>from Jpype import *
+
+ext_classpath = os.path.join(os.path.abspath('.'), 'temp.jar')
+startJVM(getDefaultJVMPath(), "-Djava.classpath.path="+ext_classpath)
+</code></pre>
+
+<p>   下面做一个假设</p>
+
+<p>   这个temp.jar中有一个你想要的调用的class</p>
+
+<pre><code>package trial.jpype;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import com.cootek.data.proto.CoreDataType.NameComponents;
+
+
+import trial.on.jpype.shuaizki;
+
+import me.shuaizki.util.IO.MyIO;
+
+public class namenormalizer {
+
+public static void speak1()
+{
+    System.out.println("blah..blah..blah");
+}
+
+public static String getNormalizedName(String str)
+{
+    NameComponents nc = NameSplit.getSingleton().getNormalizedName(str);
+    return ncToJson(nc);
+}
+
+public static String ncToJson(NameComponents nc)
+{
+    String ret = "{";
+    return ret;
+}
+
+}
+</code></pre>
+
+<p>我们想调用的是namenormalizer中的getNormalizedName和speak1，首先要获取namenormalizer这个class，有两种途径获取这个</p>
+
+<pre><code>namenormalizer = JClass('trial.jpype.namenormalizer')
+利用
+ns = namenormalizer() 获取namenormlaizer 的一个对象
+利用ns.getNormalizedName(“hello”)调用或者直接利用 namenormalizer.getNormalizedName()进行调用， 这样就完成了类的获取和函数的调用
+</code></pre>
+
+<p>还有一种途径是利用Jpackage()这个函数</p>
+
+<pre><code>namenormalizer = JPackage('trial').jpype.namenormalizer
+</code></pre>
+
+<p>   其实看看源码就会知道jpackage对类的访问依靠的也是jclass，只不过其提供了对包的访问。归根结底能找到类还是要依靠_jpype.findClass()这个函数，也就是C++代码里的东西，这个后面会有介绍。</p>
+
+<h4>运行代码的注意事项</h4>
+
+<p>   好了，我们最后的代码长成这个样子</p>
+
+<pre><code>from Jpype import *
+
+ext_classpath = os.path.join(os.path.abspath('.'), 'temp.jar')
+startJVM(getDefaultJVMPath(), "-Djava.classpath.path="+ext_classpath)
+namenormalizer = JClass('trial.jpype.namenormalizer')
+namenormalizer.getNormalizedName("hello")
+
+shuwdownJVM()
+</code></pre>
+
+<p>   尝试着运行一下吧~</p>
+
+<pre><code> namesplit = JClass('com.cootek.data.segmentation.namenormalizer')
+ File "/Library/Python/2.7/site-packages/jpype/_jclass.py", line 54, in JClass
+raise _RUNTIMEEXCEPTION.PYEXC("Class %s not found" % name)
+ jpype._jexception.ExceptionPyRaisable: java.lang.Exception: Class
+ com.cootek.data.segmentation.namenormalizer not found
+</code></pre>
+
+<p>  纳尼！！！这是什么情况，找不到呢
+  看一下我们的代码，发现没什么问题，包也在，那是为什么呢? 如果你用eclipse 的话，打开你的.classpath看看吧</p>
+
+<pre><code>&lt;classpath&gt;
+    &lt;classpathentry kind="src" path="src"/&gt;
+    &lt;classpathentry kind="src" path="test"/&gt;
+    &lt;classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 6 (MacOS X Default)"/&gt;
+    &lt;classpathentry kind="lib" path="lib/protobuf-java-2.4.1.jar"/&gt;
+    &lt;classpathentry kind="lib" path="lib/gson-2.2.4.jar"/&gt;
+    &lt;classpathentry kind="output" path="bin"/&gt;
+&lt;/classpath&gt;
+</code></pre>
+
+<p>   如果你不用eclipse，肯定自己知道你用了一些外部包了。这些都要统统放在classpath里，不然Jpype自己是找不到的
+    把这些lib里的东西都放在classpath里就行了，代码应该就能运行ok了</p>
+
+<h4>debug建议</h4>
+
+<p>如果还是跑不起来的话，那就重新编译一下JPype，让他打出debug信息，自己慢慢琢磨一下吧<br/>
+打开src/native/common/include/jpype.h这个文件，第23行的</p>
+
+<pre><code>//#define JPYPE_TRACING_INTERNAL
+</code></pre>
+
+<p>  被注释掉了，将它恢复正常了吧，然后回到Jpype的目录下，执行</p>
+
+<pre><code>sudo python setup.py build -f
+sudo python setup.py install -f
+</code></pre>
+
+<p>  再运行你的代码的话，就会看到tracing信息了，剩下的就自己慢慢琢磨去吧</p>
+
+<h2>原理</h2>
+
+<p>jpype其实用的是jni实现<br/>
+JNI就是Java Native Interface, 即可以实现Java调用本地库, 也可以实现C/C++调用Java代码, 从而实现了两种语言的互通, 可以让我们更加灵活的使用。<br/>
+之前没听过的同学可以自行学习学习<br/>
+利用c++完成对java调用的代码，做成python的库，这就是jpype的全部，实现全在代码里，大家自行参考喽<br/>
+后面我会抽时间写写关于jni的博客，顺便解析一下jpype的实现</p>
+
+</div>
+
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>13 Jun 2013</span> &raquo; <a href="/2013/06/13/first-artical.html">博客动起来了</a></li>
+    
+      <li><span>05 Jun 2013</span> &raquo; <a href="/2013/06/05/booklist-of-June.html">本月书单</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Shuaizki<br />
+        shuaizki@gmail.com
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/shuaizki/">github.com/shuaizki</a><br />
+        <!--a href="http://twitter.com/mojombo/">twitter.com/mojombo</a><br /-->
+        <!--a href="http://flickr.com/photos/mojombo/">flickr.com/photos/mojombo</a-->
+      </p>
+    </div>
+    <!--div class="rss">
+      <a href="http://feeds.feedburner.com/tom-preston-werner">
+        <img src="/images/rss.png" alt="Subscribe to RSS Feed" />
+      </a>
+    </div-->
+  </div>
+</div>
+
+<!--a href="http://github.com/mojombo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" /></a -->
+
+<!-- ClickTale Bottom part -->
+<div id="ClickTaleDiv" style="display: none;"></div>
+<script type="text/javascript">
+if(document.location.protocol!='https:')
+  document.write(unescape("%3Cscript%20src='http://s.clicktale.net/WRb.js'%20type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+if(typeof ClickTale=='function') ClickTale(206,0.3,"www03");
+</script>
+<!-- ClickTale end of Bottom part -->
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-6016902-1");
+pageTracker._trackPageview();
+</script>
+<!-- Google Analytics end -->
+
+</body>
+</html>
