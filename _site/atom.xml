@@ -4,7 +4,7 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-06-22T12:45:53+08:00</updated>
+ <updated>2013-06-22T12:51:07+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
@@ -73,7 +73,7 @@ startJVM(getDefaultJVMPath(), &quot;-Djava.classpath.path=&quot;+ext_classpath)
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import com.cootek.data.proto.CoreDataType.NameComponents;
+import trial.jpype.CoreDataType.NameComponents;
 
 
 import trial.on.jpype.shuaizki;
@@ -133,11 +133,11 @@ shuwdownJVM()
 
 &lt;p&gt;   尝试着运行一下吧~&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt; namesplit = JClass('com.cootek.data.segmentation.namenormalizer')
+&lt;pre&gt;&lt;code&gt; namesplit = JClass('trial.jpype.namenormalizer')
  File &quot;/Library/Python/2.7/site-packages/jpype/_jclass.py&quot;, line 54, in JClass
 raise _RUNTIMEEXCEPTION.PYEXC(&quot;Class %s not found&quot; % name)
  jpype._jexception.ExceptionPyRaisable: java.lang.Exception: Class
- com.cootek.data.segmentation.namenormalizer not found
+ trial.jpype.namenormalizer not found
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;  纳尼！！！这是什么情况，找不到呢

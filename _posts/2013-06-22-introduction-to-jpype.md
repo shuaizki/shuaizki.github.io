@@ -47,7 +47,7 @@ Jpype的核心包是jpype， jpype是从jvm的native层进行调用的，首先�
     import java.io.BufferedReader;
     import java.io.BufferedWriter;
     import java.io.IOException;
-    import com.cootek.data.proto.CoreDataType.NameComponents;
+    import trial.jpype.CoreDataType.NameComponents;
 
 
     import trial.on.jpype.shuaizki;
@@ -102,11 +102,11 @@ Jpype的核心包是jpype， jpype是从jvm的native层进行调用的，首先�
 
    尝试着运行一下吧~
      
-     namesplit = JClass('com.cootek.data.segmentation.namenormalizer')
+     namesplit = JClass('trial.jpype.namenormalizer')
      File "/Library/Python/2.7/site-packages/jpype/_jclass.py", line 54, in JClass
     raise _RUNTIMEEXCEPTION.PYEXC("Class %s not found" % name)
      jpype._jexception.ExceptionPyRaisable: java.lang.Exception: Class
-     com.cootek.data.segmentation.namenormalizer not found
+     trial.jpype.namenormalizer not found
   纳尼！！！这是什么情况，找不到呢
   看一下我们的代码，发现没什么问题，包也在，那是为什么呢? 如果你用eclipse 的话，打开你的.classpath看看吧
     

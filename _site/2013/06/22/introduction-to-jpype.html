@@ -88,7 +88,7 @@ startJVM(getDefaultJVMPath(), "-Djava.classpath.path="+ext_classpath)
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import com.cootek.data.proto.CoreDataType.NameComponents;
+import trial.jpype.CoreDataType.NameComponents;
 
 
 import trial.on.jpype.shuaizki;
@@ -148,11 +148,11 @@ shuwdownJVM()
 
 <p>   尝试着运行一下吧~</p>
 
-<pre><code> namesplit = JClass('com.cootek.data.segmentation.namenormalizer')
+<pre><code> namesplit = JClass('trial.jpype.namenormalizer')
  File "/Library/Python/2.7/site-packages/jpype/_jclass.py", line 54, in JClass
 raise _RUNTIMEEXCEPTION.PYEXC("Class %s not found" % name)
  jpype._jexception.ExceptionPyRaisable: java.lang.Exception: Class
- com.cootek.data.segmentation.namenormalizer not found
+ trial.jpype.namenormalizer not found
 </code></pre>
 
 <p>  纳尼！！！这是什么情况，找不到呢
