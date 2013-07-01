@@ -32,7 +32,8 @@ var WRInitTime=(new Date()).getTime();
   </div>
   
   <div id="post">
-<p>主要用于大规模数据挖掘和数据统计。<br/>
+<p>datafu是linkedin（虽然我现在还没用过。。。）内部用到的一个pig udf的集合，稳定，经过良好的测试。<br/>
+主要用于大规模数据挖掘和数据统计。<br/>
 好吧，以上是官方说法，我花了一点时间扫了一下里面的udf（<a href="http://linkedin.github.io/datafu/docs/javadoc/">javadoc在这里</a>，里面的东西好少），用途最大的大约是datafu.pig.bags包和datafu.pig.bags.sets里面的函数了，前者是针对bag类型的一些常见操作，后者弥补了pig中没有set操作的缺陷，虽然只有intersetc和union两个函数</p>
 
 <p>剩下的包里面大约是我这辈子都不会用到的一些函数了，pagerank，haversinedist,不过应该能拿来做一些好玩儿的事情</p>

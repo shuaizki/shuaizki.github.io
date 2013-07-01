@@ -4,7 +4,7 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-07-01T16:03:27+08:00</updated>
+ <updated>2013-07-01T16:05:08+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
@@ -17,7 +17,8 @@
    <link href="http://tom.preston-werner.com/2013/07/01/datafu.html"/>
    <updated>2013-07-01T00:00:00+08:00</updated>
    <id>http://tom.preston-werner.com/2013/07/01/datafu</id>
-   <content type="html">&lt;p&gt;主要用于大规模数据挖掘和数据统计。&lt;br/&gt;
+   <content type="html">&lt;p&gt;datafu是linkedin（虽然我现在还没用过。。。）内部用到的一个pig udf的集合，稳定，经过良好的测试。&lt;br/&gt;
+主要用于大规模数据挖掘和数据统计。&lt;br/&gt;
 好吧，以上是官方说法，我花了一点时间扫了一下里面的udf（&lt;a href=&quot;http://linkedin.github.io/datafu/docs/javadoc/&quot;&gt;javadoc在这里&lt;/a&gt;，里面的东西好少），用途最大的大约是datafu.pig.bags包和datafu.pig.bags.sets里面的函数了，前者是针对bag类型的一些常见操作，后者弥补了pig中没有set操作的缺陷，虽然只有intersetc和union两个函数&lt;/p&gt;
 
 &lt;p&gt;剩下的包里面大约是我这辈子都不会用到的一些函数了，pagerank，haversinedist,不过应该能拿来做一些好玩儿的事情&lt;/p&gt;
