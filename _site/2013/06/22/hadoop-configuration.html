@@ -41,9 +41,12 @@ var WRInitTime=(new Date()).getTime();
 <p>比较关键的私有变量有</p>
 
 <pre><code>ArrayList&lt;Object&gt; resources; 
-记录各个资源文件，configuration里总共有四种形式了，String（文件名）， URL, Path(hadoop 自己定义的), 还有inputstream, 在loadresource的时候，用instanceof进行判断然后加载
+记录各个资源文件，configuration里总共有四种形式了  
+    String（文件名）， URL, Path(hadoop 自己定义的), 还有inputstream
+    在loadresource的时候，用instanceof进行判断然后加载
 
-Set&lt;String&gt; finalParameters; 记录了const的哪些配置变量（比如hdfs-site.xml里面的dfs.replication, 被设置成了final）
+Set&lt;String&gt; finalParameters; 
+    记录了const的哪些配置变量（比如hdfs-site.xml里面的dfs.replication, 被设置成了final）
 
 boolean loadDefaults = true; 用于确定是否加载默认资源(默认加载哦)
 
@@ -57,7 +60,8 @@ private boolean storeResource; 是否要存储下面的hashmap
 
 privte HashMap&lt;String, String&gt; updatingResource; 存储某个配置项的来源资源文件
 
-其次是configuration里面的两个个Properties类型的变量， properties存储所有的配置项目, overlay存储所有被覆盖的配置
+其次是configuration里面的两个个Properties类型的变量,
+properties存储所有的配置项目, overlay存储所有被覆盖的配置
 还有classloader变量，是当前线程的contextclassloader, 或者是当前类的classloader（如果前者为空的话）
 </code></pre>
 
@@ -160,11 +164,11 @@ loadResource(Properties, Object, boolean)
   <h2>Related Posts</h2>
   <ul class="posts">
     
+      <li><span>01 Jul 2013</span> &raquo; <a href="/2013/07/01/datafu.html">dataFu印象</a></li>
+    
       <li><span>22 Jun 2013</span> &raquo; <a href="/2013/06/22/introduction-to-jpype.html">Jpype的一些事儿</a></li>
     
       <li><span>13 Jun 2013</span> &raquo; <a href="/2013/06/13/first-artical.html">博客动起来了</a></li>
-    
-      <li><span>05 Jun 2013</span> &raquo; <a href="/2013/06/05/booklist-of-June.html">本月书单</a></li>
     
   </ul>
 </div>

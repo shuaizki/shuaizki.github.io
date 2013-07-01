@@ -4,13 +4,30 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-06-22T18:02:19+08:00</updated>
+ <updated>2013-07-01T16:03:27+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>dataFu印象</title>
+   <link href="http://tom.preston-werner.com/2013/07/01/datafu.html"/>
+   <updated>2013-07-01T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/07/01/datafu</id>
+   <content type="html">&lt;p&gt;主要用于大规模数据挖掘和数据统计。&lt;br/&gt;
+好吧，以上是官方说法，我花了一点时间扫了一下里面的udf（&lt;a href=&quot;http://linkedin.github.io/datafu/docs/javadoc/&quot;&gt;javadoc在这里&lt;/a&gt;，里面的东西好少），用途最大的大约是datafu.pig.bags包和datafu.pig.bags.sets里面的函数了，前者是针对bag类型的一些常见操作，后者弥补了pig中没有set操作的缺陷，虽然只有intersetc和union两个函数&lt;/p&gt;
+
+&lt;p&gt;剩下的包里面大约是我这辈子都不会用到的一些函数了，pagerank，haversinedist,不过应该能拿来做一些好玩儿的事情&lt;/p&gt;
+
+&lt;p&gt;  顺便翻了一下里面的源码，util里面有些不错的东东&lt;br/&gt;
+  目测比较实用的有SimpleEvalFunc,　实现pig udf的exec要从Tuple arg0里面提取参数并转型，这样就涉及到类型检查之类的操作（实际上从来没做过类型检查= =， 但是吃过这方面的亏），这个函数把这一些检查操作进行了封装，只需要实现call函数，就会自动完成一些列的操作。&lt;/p&gt;
+
+&lt;p&gt;  另外工具包里的代码都有着良好的实现，构造函数和outputSchema函数一应俱全，exception更是给的恰到好处，更是包含了平时不可能用到的Accumulator的实现，对于刚开始学习pig的人写udf应该会带来很大帮助。&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Jpype的一些事儿</title>
@@ -196,9 +213,12 @@ JNI就是Java Native Interface, 即可以实现Java调用本地库, 也可以实
 &lt;p&gt;比较关键的私有变量有&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;ArrayList&amp;lt;Object&amp;gt; resources; 
-记录各个资源文件，configuration里总共有四种形式了，String（文件名）， URL, Path(hadoop 自己定义的), 还有inputstream, 在loadresource的时候，用instanceof进行判断然后加载
+记录各个资源文件，configuration里总共有四种形式了  
+    String（文件名）， URL, Path(hadoop 自己定义的), 还有inputstream
+    在loadresource的时候，用instanceof进行判断然后加载
 
-Set&amp;lt;String&amp;gt; finalParameters; 记录了const的哪些配置变量（比如hdfs-site.xml里面的dfs.replication, 被设置成了final）
+Set&amp;lt;String&amp;gt; finalParameters; 
+    记录了const的哪些配置变量（比如hdfs-site.xml里面的dfs.replication, 被设置成了final）
 
 boolean loadDefaults = true; 用于确定是否加载默认资源(默认加载哦)
 
@@ -212,7 +232,8 @@ private boolean storeResource; 是否要存储下面的hashmap
 
 privte HashMap&amp;lt;String, String&amp;gt; updatingResource; 存储某个配置项的来源资源文件
 
-其次是configuration里面的两个个Properties类型的变量， properties存储所有的配置项目, overlay存储所有被覆盖的配置
+其次是configuration里面的两个个Properties类型的变量,
+properties存储所有的配置项目, overlay存储所有被覆盖的配置
 还有classloader变量，是当前线程的contextclassloader, 或者是当前类的classloader（如果前者为空的话）
 &lt;/code&gt;&lt;/pre&gt;
 

@@ -8,9 +8,12 @@ title: hadoop源码阅读-configuration
 比较关键的私有变量有  
 	
 	ArrayList<Object> resources; 
-	记录各个资源文件，configuration里总共有四种形式了，String（文件名）， URL, Path(hadoop 自己定义的), 还有inputstream, 在loadresource的时候，用instanceof进行判断然后加载
+	记录各个资源文件，configuration里总共有四种形式了  
+        String（文件名）， URL, Path(hadoop 自己定义的), 还有inputstream
+        在loadresource的时候，用instanceof进行判断然后加载
 	
-	Set<String> finalParameters; 记录了const的哪些配置变量（比如hdfs-site.xml里面的dfs.replication, 被设置成了final）
+	Set<String> finalParameters; 
+        记录了const的哪些配置变量（比如hdfs-site.xml里面的dfs.replication, 被设置成了final）
 	
 	boolean loadDefaults = true; 用于确定是否加载默认资源(默认加载哦)
 	
@@ -24,7 +27,8 @@ title: hadoop源码阅读-configuration
     
     privte HashMap<String, String> updatingResource; 存储某个配置项的来源资源文件
     
-    其次是configuration里面的两个个Properties类型的变量， properties存储所有的配置项目, overlay存储所有被覆盖的配置
+    其次是configuration里面的两个个Properties类型的变量,
+    properties存储所有的配置项目, overlay存储所有被覆盖的配置
     还有classloader变量，是当前线程的contextclassloader, 或者是当前类的classloader（如果前者为空的话）
     
     

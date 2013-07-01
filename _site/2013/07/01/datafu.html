@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>本月书单</title>
+   <title>dataFu印象</title>
    <meta name="author" content="shuaizki" />
    <!--link href="http://feeds.feedburner.com/tom-preston-werner" rel="alternate" title="Tom Preston-Werner" type="application/atom+xml" /-->
    <meta name="readability-verification" content="QCzSs992GxmRYRKVpPeZ6LE2tS8aYKxsSSQKV8YM"/>
@@ -32,18 +32,15 @@ var WRInitTime=(new Date()).getTime();
   </div>
   
   <div id="post">
-<h2>本月书单</h2>
+<p>主要用于大规模数据挖掘和数据统计。<br/>
+好吧，以上是官方说法，我花了一点时间扫了一下里面的udf（<a href="http://linkedin.github.io/datafu/docs/javadoc/">javadoc在这里</a>，里面的东西好少），用途最大的大约是datafu.pig.bags包和datafu.pig.bags.sets里面的函数了，前者是针对bag类型的一些常见操作，后者弥补了pig中没有set操作的缺陷，虽然只有intersetc和union两个函数</p>
 
-<p>1、中国国民性演变历程</p>
+<p>剩下的包里面大约是我这辈子都不会用到的一些函数了，pagerank，haversinedist,不过应该能拿来做一些好玩儿的事情</p>
 
-<h2><img src="http://img5.douban.com/lpic/s26381229.jpg" alt="中国国民性演变历程" /></h2>
+<p>  顺便翻了一下里面的源码，util里面有些不错的东东<br/>
+  目测比较实用的有SimpleEvalFunc,　实现pig udf的exec要从Tuple arg0里面提取参数并转型，这样就涉及到类型检查之类的操作（实际上从来没做过类型检查= =， 但是吃过这方面的亏），这个函数把这一些检查操作进行了封装，只需要实现call函数，就会自动完成一些列的操作。</p>
 
-<p>2、Hadoop技术内幕-深入解析hadoop common和hdfs架构设计与实现原理</p>
-
-<h2><img src="http://img3.douban.com/lpic/s26376893.jpg" alt="" /></h2>
-
-<p>3、高效能人士的七个习惯<br/>
-<img src="http://img3.douban.com/lpic/s1152683.jpg" alt="" /></p>
+<p>  另外工具包里的代码都有着良好的实现，构造函数和outputSchema函数一应俱全，exception更是给的恰到好处，更是包含了平时不可能用到的Accumulator的实现，对于刚开始学习pig的人写udf应该会带来很大帮助。</p>
 
 </div>
 
@@ -51,11 +48,11 @@ var WRInitTime=(new Date()).getTime();
   <h2>Related Posts</h2>
   <ul class="posts">
     
-      <li><span>01 Jul 2013</span> &raquo; <a href="/2013/07/01/datafu.html">dataFu印象</a></li>
-    
       <li><span>22 Jun 2013</span> &raquo; <a href="/2013/06/22/introduction-to-jpype.html">Jpype的一些事儿</a></li>
     
       <li><span>22 Jun 2013</span> &raquo; <a href="/2013/06/22/hadoop-configuration.html">hadoop源码阅读-configuration</a></li>
+    
+      <li><span>13 Jun 2013</span> &raquo; <a href="/2013/06/13/first-artical.html">博客动起来了</a></li>
     
   </ul>
 </div>
