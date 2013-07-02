@@ -158,6 +158,25 @@ loadResource(Properties, Object, boolean)
 
 <h5>3、configuration中用到hashCode的两个函数getLocalPath和getFile</h5>
 
+<pre><code>public File getFile(String dirsProp, String path)
+  throws IOException {
+  String[] dirs = getStrings(dirsProp);
+  int hashCode = path.hashCode();
+  for (int i = 0; i &lt; dirs.length; i++) {  // try each local dir
+    int index = (hashCode+i &amp; Integer.MAX_VALUE) % dirs.length;
+    File file = new File(dirs[index], path);
+    File dir = file.getParentFile();
+    if (dir.exists() || dir.mkdirs()) {
+      return file;
+    }
+  }
+  throw new IOException("No valid local directories in property: "+dirsProp);
+}
+</code></pre>
+
+<p>如果之前看看注释的话，这段代码应该会很容易理解了，其实就是dirs里面包含很多项的话，从里面选出一个来，如果满足条件就使用，否则就选下一个。<br/>
+hashcode的使用是为了保证随即性。</p>
+
 </div>
 
 <div id="related">

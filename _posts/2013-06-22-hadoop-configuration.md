@@ -108,4 +108,19 @@ loadResource(Properties, Object, boolean)
 #####1、某些为了保证线程安全而加的synchronized段，比如上面提到的那段
 #####2、不同类型的classloader用起来有什么区别，比如configuration里涉及到的两种类型
 #####3、configuration中用到hashCode的两个函数getLocalPath和getFile
-
+    public File getFile(String dirsProp, String path)
+      throws IOException {
+      String[] dirs = getStrings(dirsProp);
+      int hashCode = path.hashCode();
+      for (int i = 0; i < dirs.length; i++) {  // try each local dir
+        int index = (hashCode+i & Integer.MAX_VALUE) % dirs.length;
+        File file = new File(dirs[index], path);
+        File dir = file.getParentFile();
+        if (dir.exists() || dir.mkdirs()) {
+          return file;
+        }
+      }
+      throw new IOException("No valid local directories in property: "+dirsProp);
+    }
+如果之前看看注释的话，这段代码应该会很容易理解了，其实就是dirs里面包含很多项的话，从里面选出一个来，如果满足条件就使用，否则就选下一个。  
+hashcode的使用是为了保证随即性。  
