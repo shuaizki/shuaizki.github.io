@@ -4,13 +4,31 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-07-02T23:34:04+08:00</updated>
+ <updated>2013-07-04T00:12:26+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>记几个没来得及解决的问题</title>
+   <link href="http://tom.preston-werner.com/2013/07/03/g%2B%2B-things.html"/>
+   <updated>2013-07-03T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/07/03/g++-things</id>
+   <content type="html">&lt;p&gt;上午开个大半个上午的会&lt;br/&gt;
+下午本想针对要做的事儿写出个初步的模型来，结果光是环境就折腾了大半天，万恶的移植&lt;br/&gt;
+遇到的问题主要有：&lt;br/&gt;
+* g++中的-std指令中用到的几个参数有什么不同？发现std::stoi这个函数还有std::to_string()这个函数是不存在的，跟那些参数有关吗？还是跟平台有关？
+* osx中的g++的库文件跟linux有什么不同，发现找了半天没找到的一个so文件被我改成dylib文件就成了，还有其他不同的地方吗？
+* 还有就是boost的具体功能是什么，与stl的异同在哪里？另外就是几个不明所以的库，libev和libevent？估计查查manual就可以了&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;好吧，模型的事儿就明早折腾吧，最基础的设施刚刚搭建起来，还不确定能不能用......&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>日参省乎己-07-22</title>
