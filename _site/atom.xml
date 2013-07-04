@@ -4,7 +4,7 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-07-04T00:12:26+08:00</updated>
+ <updated>2013-07-04T08:36:23+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
@@ -18,15 +18,29 @@
    <updated>2013-07-03T00:00:00+08:00</updated>
    <id>http://tom.preston-werner.com/2013/07/03/g++-things</id>
    <content type="html">&lt;p&gt;上午开个大半个上午的会&lt;br/&gt;
-下午本想针对要做的事儿写出个初步的模型来，结果光是环境就折腾了大半天，万恶的移植&lt;br/&gt;
-遇到的问题主要有：&lt;br/&gt;
-* g++中的-std指令中用到的几个参数有什么不同？发现std::stoi这个函数还有std::to_string()这个函数是不存在的，跟那些参数有关吗？还是跟平台有关？
-* osx中的g++的库文件跟linux有什么不同，发现找了半天没找到的一个so文件被我改成dylib文件就成了，还有其他不同的地方吗？
-* 还有就是boost的具体功能是什么，与stl的异同在哪里？另外就是几个不明所以的库，libev和libevent？估计查查manual就可以了&lt;/p&gt;
+下午本想针对要做的事儿写出个初步的模型来，结果光是环境就折腾了大半天，万恶的移植
+遇到的问题主要有：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;g++中的-std指令中用到的几个参数有什么不同？发现std::stoi这个函数还有std::to_string()这个函数是不存在的，跟那些参数有关吗？还是跟平台有关？&lt;br/&gt;
+是不同的c++标准，i686-apple-darwin11-llvm-g++-4.2 (GCC) 4.2.1的stdlib里没提供这两个函数，暂时不想研究&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;osx中的g++的库文件跟linux有什么不同，发现找了半天没找到的一个so文件被我改成dylib文件就成了，还有其他不同的地方吗？&lt;br/&gt;
+找到了&lt;a href=&quot;http://docstore.mik.ua/orelly/unix3/mac/ch05_03.htm&quot;&gt;一篇不错的文&lt;/a&gt;，虽然有点一知半解，大致了解了linux体系中的二进制文件采用的是ELF格式，而mac中采用的是Match-O格式。在elf格式中，shared libraries 和 loadable module是一样的。但是在Match-O体系中，这两个东西是有着严格区别的。&lt;br/&gt;
+前者用otool显示出来的类型是DYLIB，后缀是dylib，只能静态链接，如果用dyld API的话可以动态加载。  * 后者叫做bundles，虽然mac推荐用.bundle的后缀，无奈linux党太强大了，还是缀以了so。在mac中bundle只能动态加载和反加载（也要用dyld），不能链接。
+然后就是一大堆例子了。。。感觉mac下的东西很难用的样子。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;还有就是boost的具体功能是什么，与stl的异同在哪里？另外就是几个不明所以的库，libev和libevent？估计查查manual就可以了
+boost 就是一组功能性的程序库，广泛采用template实现，也许这是跟stl唯一的相同点吧。。。&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;libev是Marc Lehmann用C写的高性能事件循环库。通过libev，可以灵活地把各种事件组织管理起来，如：时钟、io、信号等。libev在业界内也是广受好评，不少项目都采用它来做底层的事件循环。
+libevent是一个异步事件处理软件函式库，以BSD许可证发布。&lt;br/&gt;
+libevent提供了一组应用程序编程接口（API），让程式设计师可以设定某些事件发生时所执行的函式，也就是说，libevent可以用来取代网络服务器所使用的事件循环检查框架。&lt;br/&gt;
+由于可以省去对网络的处理，且拥有不错的效能，有些软件使用libevent作为网络底层的函式库，如：memcached、Tor。&lt;/p&gt;&lt;/blockquote&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 
 &lt;hr /&gt;
 
-&lt;p&gt;好吧，模型的事儿就明早折腾吧，最基础的设施刚刚搭建起来，还不确定能不能用......&lt;/p&gt;
+&lt;p&gt; 好吧，模型的事儿就明早折腾吧，最基础的设施刚刚搭建起来，还不确定能不能用......&lt;/p&gt;
 </content>
  </entry>
  
