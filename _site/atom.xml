@@ -4,7 +4,7 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-07-04T08:36:23+08:00</updated>
+ <updated>2013-07-04T19:20:01+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
@@ -13,7 +13,37 @@
 
  
  <entry>
-   <title>记几个没来得及解决的问题</title>
+   <title>osx下编译so的困难记录</title>
+   <link href="http://tom.preston-werner.com/2013/07/04/g%2B%2B-things2.html"/>
+   <updated>2013-07-04T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/07/04/g++-things2</id>
+   <content type="html">&lt;p&gt;昨天一度以为那个模块编好了就一劳永逸了，结果今天早上到了之后又悲剧的发现还有另外一个东西要编译，sigh，为了工作正常展开，为了不倒退到ubuntu时代，只能上了。&lt;/p&gt;
+
+&lt;p&gt;首先遇到的问题是一个文件中用了SOCK_NONBLOCKING，翻了一下socket的manual, 发现果然没有（当时狗眼瞎了，没有看到赫然印着的&lt;font color=&quot;red&quot;&gt;BSD system calls manual&lt;/font&gt;）, 还在傻乎乎的想，是不是我g++版本的问题，导致没有这个东东呢。。。捂脸。。。&lt;br/&gt;
+正如网页&lt;a href=&quot;http://www.gnu.org/software/libc/&quot;&gt;gnu c library&lt;/a&gt;上说的那样，unix-like 系列的操作系统都需要一个定义了系统调用和其他如open，malloc之类基础设施的c语言库，在mac里，被放在了/usr/lib/system中。回忆一下系统库和标准c库之间的不同，省的再次头昏脑涨。&lt;br/&gt;
+至于为什么没有SOCK_NONBLOCK，跟内核有关，我大mac党躺枪....最后删了一些代码了事(我这边用不到那些)&lt;/p&gt;
+
+&lt;p&gt;随后遇到的问题是&lt;code&gt;mach-o, but wrong architecture&lt;/code&gt;，是模块编译成功后dlopen该模块产生了问题，解决这个问题饶了一些弯子。&lt;br/&gt;
+首先隆重介绍工具lipo, 这个是用来生成或者操作universal文件的，所谓universal文件就是multi-architecture文件,于是。。。我用它来查看架构。。。经过检查发现python的arch和要用库的都是x86_64，于是开始检查python, &lt;code&gt;defaults read com.apple.versioner.python&lt;/code&gt; 能够检查当前版本python的默认架构, 发现是坑爹的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &quot;Prefer-32-Bit&quot; = 1;
+    &quot;Prefer-64-Bit&quot; = 1;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;难怪会有&lt;code&gt;wrong architecture&lt;/code&gt;的问题，改之，然后就能正确的运行了。顺手查了一下dlopen(), 里面提到&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;dlopen() can load dynamic libraries and bundles.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;这就跟上一篇文章里面的说法不太一致了，这个事儿还是留时间做做实验吧.&lt;/p&gt;
+
+&lt;p&gt;还有一个遗留问题，晚上查吧&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>osx下编译dylib的知识记录</title>
    <link href="http://tom.preston-werner.com/2013/07/03/g%2B%2B-things.html"/>
    <updated>2013-07-03T00:00:00+08:00</updated>
    <id>http://tom.preston-werner.com/2013/07/03/g++-things</id>
