@@ -4,13 +4,24 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-07-07T02:02:57+08:00</updated>
+ <updated>2013-07-09T23:58:51+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>不在状态</title>
+   <link href="http://tom.preston-werner.com/2013/07/09/tired.html"/>
+   <updated>2013-07-09T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/07/09/tired</id>
+   <content type="html">&lt;p&gt;最近莫名其妙的累，感觉身体完全不在状态。&lt;br/&gt;
+大约是自行车丢了然后我就失去了唯一的锻炼途径（如果这能称之为锻炼的话）了的缘故。晚上跟老妈打电话我妈还在电话那头边吃饭边咕噜咕噜的说“你晚上下班回来了就别对着电脑了，出去跑跑锻炼锻炼，我告诉你啊，年轻的时候一定要注意身体，咕噜咕噜。。。”。&lt;br/&gt;
+最近深感对于我这样的普通人听长辈话的重要性，这里立文章为誓，以后每晚跑步半小时，来拯救我不在状态的身体。&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>java enum singleton and related safe problems</title>
