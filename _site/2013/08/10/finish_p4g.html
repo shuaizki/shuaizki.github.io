@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-   <title>java里的classloader</title>
+   <title>与P4G一起的六个月</title>
    <meta name="author" content="shuaizki" />
    <!--link href="http://feeds.feedburner.com/tom-preston-werner" rel="alternate" title="Tom Preston-Werner" type="application/atom+xml" /-->
    <meta name="readability-verification" content="QCzSs992GxmRYRKVpPeZ6LE2tS8aYKxsSSQKV8YM"/>
@@ -32,32 +32,11 @@ var WRInitTime=(new Date()).getTime();
   </div>
   
   <div id="post">
-<h1>java的classloader</h1>
-
-<h2>基本概念</h2>
-
-<p>java的classloader的作用是动态的将class载入jvm<br/>
-jvm运行的时候，用到了三个classloader:</p>
-
-<ul>
-<li>bootstrap classloader  ---用来加载java最核心的class，需要加载的class在jre/lib中，bootstrap是在jvm中的，所以写java代码的时候我们是看不到的，通过-Xbootclasspath可以指定加载哪些core api</li>
-<li>extension classloader   ---加载标准拓展库的classloader, 需要加载的类在jre/lib/ext中</li>
-<li>sys classloader ---从环境变量配置的classpath中来查找路径，设置classpath即可</li>
-</ul>
-
-
-<p>  Class.getClassLoader()会得到当前类的classloader，如果该类是String之类的class， 那么加载它的classloader就是bootstrap classloader， 如果是classpath中的包，那么会得到system classloader, ext classloader 也一样<br/>
-  ##parent delegation
-  classloader 加载类的时候会采用双亲委托的模型。在当前classloader需要加载一个类的时候，先委托其parent去加载这个类，如果parent找不到这个类，自己才开始加载。这里的parent并不是superclass， 而是一个引用关系，也就是按照上面提到的那个顺序。<br/>
-  这样做的好处就是提升安全性，比如你自己实现的String就不会被加载到jvm中，因为首先会加载的是core api中的class。<br/>
-  ##class1 == class2 ?
-  在比较两个class是否相等的时候，不仅比较两个class的名字是否相等，还要比较加载两个class的是否为同一classloader，只有两个条件同时满足的时候，才会认为两个class是等价的，否则就会出现转型错误</p>
-
-<hr />
-
-<p>  当当当当，以上是大致的概念，不过都没有提到configuration里面用到的contextclassloader<br/>
-  不过解释还是有点难懂，估计短时间内也用不着，先放着吧<br/>
-  留下一个链接，日后慢慢研究 <a href="http://www.javaworld.com/javaworld/javaqa/2003-06/01-qa-0606-load.html">find a way out of the classloader maze</a></p>
+<p>今天是把P4G通关的日子<br/>
+特地翻了一下日历,六个月之前的一个晚上，把P4G带回了家，当时手头的游戏要么已通，要么无聊，于是冲着psv平台排名第一的名头入手了P4G。一方面是不想停止游戏的进程，另一方面是打法一下年前一个周夜晚的时间。<br/>
+刚开始是狂热了一阵，以至于在我开始年假之前就有十个小时的游戏时间了。但是现在回想一下原因只不过是刚开始的兴趣了，并不是传说中的“引人入胜的剧情”。<br/>
+长剧情的RPG不玩儿到接近尾声大约是感觉不到剧情的引人入胜，而所谓引人入胜的剧情其实指的就是随着时间的推移，游戏留给你的回忆吧。所以P4G给我的感觉和仙剑系列给我的感觉是一样的。这些游戏留给大家的不是千篇一律在寝室一角开着台灯端枪厮杀或者团战之类的千篇一律的回忆（当然我也没说这样的回忆哪里不深刻）， 而是初二夏天你汗流浃背的游走在林家后院的隐蛇窟，初三冬夜你一边擦泪一边看景天和雪见最初的约定，高考前夕你和天河菱纱梦璃共赴琼华，这些点点滴滴在记忆中被慢慢拉长，直到遍布了你所有的回忆。<br/>
+而P4G留给我的就是一个可以拉长的记忆区间，72个小时（中间走过n小时的弯路），半年的回忆，可能分散在每天每周并不长，但这就是以后的我们能记住的。</p>
 
 </div>
 
@@ -65,11 +44,11 @@ jvm运行的时候，用到了三个classloader:</p>
   <h2>Related Posts</h2>
   <ul class="posts">
     
-      <li><span>10 Aug 2013</span> &raquo; <a href="/2013/08/10/finish_p4g.html">与P4G一起的六个月</a></li>
-    
       <li><span>09 Jul 2013</span> &raquo; <a href="/2013/07/09/tired.html">不在状态</a></li>
     
       <li><span>06 Jul 2013</span> &raquo; <a href="/2013/07/06/java_enum_singleton_and_reflection_attack.html">java enum singleton and related safe problems</a></li>
+    
+      <li><span>06 Jul 2013</span> &raquo; <a href="/2013/07/06/book-review.html">中国国民性演变历程读后感</a></li>
     
   </ul>
 </div>
