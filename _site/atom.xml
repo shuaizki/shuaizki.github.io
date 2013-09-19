@@ -4,13 +4,115 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-08-10T23:11:17+08:00</updated>
+ <updated>2013-09-20T00:03:01+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>more vim</title>
+   <link href="http://tom.preston-werner.com/2013/08/18/more_vim.html"/>
+   <updated>2013-08-18T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/08/18/more_vim</id>
+   <content type="html">&lt;h2&gt;移动的命令&lt;/h2&gt;
+
+&lt;p&gt;L 移动到屏幕的末端&lt;br/&gt;
+20| 移动到第20列(囧，之前都是20-&gt;的)&lt;/p&gt;
+
+&lt;h2&gt;replace&lt;/h2&gt;
+
+&lt;p&gt;之前用0,$g/old/s//new/g用惯了，其实全局替换的话还是用&lt;br/&gt;
+%s/old/new/g比较好,手指可以偷偷懒&lt;br/&gt;
+%s/old/new/gi的话是case unsensitive, gc的话就是需要confirmation&lt;br/&gt;
+另外s/old/new/替换第一个遇到的old, 而后面加个g的话替换该行所有遇到的old&lt;br/&gt;
+g/string/d 的话则是删除含有string的行&lt;br/&gt;
+v/string/d 是删除不含string的行&lt;br/&gt;
+另外ctrl-a 和 ctrl-x分别是increment num 和decrement num简直是装逼必备的命令&lt;/p&gt;
+
+&lt;h2&gt;case operation&lt;/h2&gt;
+
+&lt;p&gt;Vu-&gt;lowercase line, V是选中当前行&lt;br/&gt;
+VU-&gt;uppercase line&lt;br/&gt;
+g&lt;del&gt;~-&gt;invert case
+veU-&gt;uppercase a word, 这个指令是这么一回事，v是选择模式，e会选中当前的词，u是lowercase，U是uppercase&lt;br/&gt;
+ve&lt;/del&gt;-&gt;把一个词的case翻转，如果单用~的话,是把光标下的char变成invert case&lt;br/&gt;
+剩下的一些暴长无比的指令根本就没必要记了。只需记住用e选择一个word，U是将当前选中的区域uppercase，u是lowercase，而~是invert&lt;br/&gt;
+不过我比较好奇的是为嘛图片里提到的set first letter of each word to uppercase 在我的vim里没有用&lt;/p&gt;
+
+&lt;h2&gt;read/write files&lt;/h2&gt;
+
+&lt;p&gt;一些比较上档次的文件读写命令：&lt;br/&gt;
+: 1,n w outfile 1到n行的line写到outfile里&lt;br/&gt;
+:1,n &gt;&gt; outfile 的话可自行脑补&lt;br/&gt;
+:r infile insert the content of in file, 有了这个就不用每次很傻x的vs然后copy了&lt;br/&gt;
+:23r infile insert the content of infile under line 23&lt;/p&gt;
+
+&lt;h2&gt;file explorer&lt;/h2&gt;
+
+&lt;p&gt;基本没用过这货。。。&lt;br/&gt;
+:e . 打开集成的file explorer&lt;br/&gt;
+:Sex  ^ ^, split window and open explorer &lt;br/&gt;
+:Sex!  ^ ^, vertically split window and open explorer &lt;br/&gt;
+:ls list buffers&lt;br/&gt;
+:args list files
+:grep expression return a list of reg matching files
+:gf open file name under cursor&lt;br/&gt;
+目测最有用的可能是Sex和gf&lt;/p&gt;
+
+&lt;h2&gt;interact with linux&lt;/h2&gt;
+
+&lt;p&gt;:sh temporary returns to linux&lt;/p&gt;
+
+&lt;h2&gt;tabs/windows&lt;/h2&gt;
+
+&lt;p&gt;完全没用过这堆东西&lt;br/&gt;
+:tabnew create a new tab&lt;br/&gt;
+gt next tab&lt;br/&gt;
+:tabfirst tablast&lt;br/&gt;
+:tabdo command execute a command in all tabs&lt;br/&gt;
+:tab ball puts all open files in tabs&lt;br/&gt;
+:new abc.txt edit abc.txt in new tab&lt;/p&gt;
+
+&lt;h2&gt;auto-completion&lt;/h2&gt;
+
+&lt;p&gt;ctrl+n ctrl+p complete word, n是next的意思， p是prev的意思&lt;br/&gt;
+ctrl+x ctrl+l complete line&lt;br/&gt;
+:set dictionary=dict define dict as a dicitonalry  这个好像有点意思，这样话是不是可以把自己写的工作做个dictionary&lt;br/&gt;
+ctrl+x ctrl+k complete with dicitonary&lt;/p&gt;
+
+&lt;h2&gt;abbreviation&lt;/h2&gt;
+
+&lt;p&gt;好像是个比较好玩儿的属性&lt;br/&gt;
+:ab word word will be expanded to this&lt;br/&gt;
+:una word&lt;br/&gt;
+:abc clear all abbreviations&lt;/p&gt;
+
+&lt;h2&gt;indent&lt;/h2&gt;
+
+&lt;p&gt;=% indent code between parenthesis&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>chrome插件开发-browser aciton</title>
+   <link href="http://tom.preston-werner.com/2013/08/15/chrome_browser_actions.html"/>
+   <updated>2013-08-15T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/2013/08/15/chrome_browser_actions</id>
+   <content type="html">&lt;p&gt;之前帮一个朋友做了一个自动调表的插件,自我感觉做的其烂无比。。。&lt;br/&gt;
+但好歹也算是对javascript和chrome的开发有点小入门了,所以决定最近还是抽点时间看看文档和别人的源码，这样以后好歹能做点很酷的前端小插件了。&lt;/p&gt;
+
+&lt;h1&gt;browserAction&lt;/h1&gt;
+
+&lt;p&gt;browser action 可以包含四个元素，icon, tootip, badge, popup&lt;/p&gt;
+
+&lt;h2&gt;icon&lt;/h2&gt;
+
+&lt;p&gt;browser action最大可以有19dips。而设置icon有两种&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>与P4G一起的六个月</title>
@@ -667,7 +769,7 @@ hashcode的使用是为了保证随即性。&lt;/p&gt;
 
 &lt;h2&gt;&lt;img src=&quot;http://img5.douban.com/lpic/s26381229.jpg&quot; alt=&quot;中国国民性演变历程&quot; /&gt;&lt;/h2&gt;
 
-&lt;p&gt;2、Hadoop技术内幕-深入解析hadoop common和hdfs架构设计与实现原理&lt;/p&gt;
+&lt;p&gt;2、hadoop技术内幕-深入解析hadoop common和hdfs架构设计与实现原理&lt;/p&gt;
 
 &lt;h2&gt;&lt;img src=&quot;http://img3.douban.com/lpic/s26376893.jpg&quot; alt=&quot;&quot; /&gt;&lt;/h2&gt;
 

@@ -35,6 +35,10 @@ var WRInitTime=(new Date()).getTime();
   <h1>Blog Posts</h1>
   <ul class="posts">
     
+      <li><span>18 Aug 2013</span> &raquo; <a href="/2013/08/18/more_vim.html">more vim</a></li>
+    
+      <li><span>15 Aug 2013</span> &raquo; <a href="/2013/08/15/chrome_browser_actions.html">chrome插件开发-browser aciton</a></li>
+    
       <li><span>10 Aug 2013</span> &raquo; <a href="/2013/08/10/finish_p4g.html">与P4G一起的六个月</a></li>
     
       <li><span>09 Jul 2013</span> &raquo; <a href="/2013/07/09/tired.html">不在状态</a></li>
