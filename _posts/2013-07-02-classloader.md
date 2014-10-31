@@ -1,6 +1,7 @@
 ---
 layout: post
 title: java里的classloader
+category: language_related
 ---
 #java的classloader
 ##基本概念

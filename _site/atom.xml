@@ -4,7 +4,7 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2013-09-20T00:03:01+08:00</updated>
+ <updated>2014-10-31T22:13:27+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
@@ -13,10 +13,54 @@
 
  
  <entry>
+   <title>How to disable output to console</title>
+   <link href="http://tom.preston-werner.com/language_related/2013/09/19/log4j_problems.html"/>
+   <updated>2013-09-19T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/language_related/2013/09/19/log4j_problems</id>
+   <content type="html">&lt;p&gt;log4j用的不熟悉，但是为了项目的log能thread-safe就改用了这个。。。&lt;br/&gt;
+结果在邮件里被抱怨原文打到文件里的log现在在屏幕log里也有一份&lt;br/&gt;
+遂在stackoverflow上找到帖子一张&lt;br/&gt;
+&lt;a href=&quot;http://stackoverflow.com/questions/7513463/how-can-i-disable-output-to-log4j-rootlogger&quot;&gt;how can I disable output to log4j.rootLogger?&lt;/a&gt;&lt;br/&gt;
+后来证实是additivity项的设置问题&lt;br/&gt;
+在log4j的文档里面有这么一段话:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;The output of a log statement of logger C will go to all the appenders in C and its ancestors. This is the meaning of the term &quot;appender additivity&quot;.
+
+However, if an ancestor of logger C, say P, has the additivity flag set to false, then C's output will be directed to all the appenders in C and its ancestors upto and including P but not the appenders in any of the ancestors of P.
+
+Loggers have their additivity flag set to true by default.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;于是一个log被传到rootlogger的appender里了，难怪info的时候到了stderr的输出里。目前自己的项目里直接把additivity设置为false就可以了，但是best answer给出的建议是把stdout, stderr从root logger里面去掉。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>linux terminal shortcut</title>
+   <link href="http://tom.preston-werner.com/tools/2013/09/05/linux_terminam_shortcut.html"/>
+   <updated>2013-09-05T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/tools/2013/09/05/linux_terminam_shortcut</id>
+   <content type="html">&lt;h1&gt;之前不太清楚的一些快捷键&lt;/h1&gt;
+
+&lt;h2&gt;删除&lt;/h2&gt;
+
+&lt;p&gt;ctrl+d  向右删除一个字符&lt;br/&gt;
+ctrl+k  删除当前字符到行尾&lt;br/&gt;
+ctrl+w  删除从光标到当前单词的开头&lt;/p&gt;
+
+&lt;h2&gt;其他操作&lt;/h2&gt;
+
+&lt;p&gt;ctrl+y  插入最近删除的单词&lt;br/&gt;
+ctrl+d  当前操作赚到后台&lt;br/&gt;
+ctrl+l  无敌清屏棒子&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>more vim</title>
-   <link href="http://tom.preston-werner.com/2013/08/18/more_vim.html"/>
+   <link href="http://tom.preston-werner.com/tools/2013/08/18/more_vim.html"/>
    <updated>2013-08-18T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/08/18/more_vim</id>
+   <id>http://tom.preston-werner.com/tools/2013/08/18/more_vim</id>
    <content type="html">&lt;h2&gt;移动的命令&lt;/h2&gt;
 
 &lt;p&gt;L 移动到屏幕的末端&lt;br/&gt;
@@ -44,11 +88,13 @@ ve&lt;/del&gt;-&gt;把一个词的case翻转，如果单用~的话,是把光标�
 
 &lt;h2&gt;read/write files&lt;/h2&gt;
 
-&lt;p&gt;一些比较上档次的文件读写命令：&lt;br/&gt;
-: 1,n w outfile 1到n行的line写到outfile里&lt;br/&gt;
+&lt;dl&gt;
+&lt;dt&gt;一些比较上档次的文件读写命令：  &lt;/dt&gt;
+&lt;dd&gt;1,n w outfile 1到n行的line写到outfile里&lt;br/&gt;
 :1,n &gt;&gt; outfile 的话可自行脑补&lt;br/&gt;
 :r infile insert the content of in file, 有了这个就不用每次很傻x的vs然后copy了&lt;br/&gt;
-:23r infile insert the content of infile under line 23&lt;/p&gt;
+:23r infile insert the content of infile under line 23&lt;/dd&gt;
+&lt;/dl&gt;
 
 &lt;h2&gt;file explorer&lt;/h2&gt;
 
@@ -98,9 +144,9 @@ ctrl+x ctrl+k complete with dicitonary&lt;/p&gt;
  
  <entry>
    <title>chrome插件开发-browser aciton</title>
-   <link href="http://tom.preston-werner.com/2013/08/15/chrome_browser_actions.html"/>
+   <link href="http://tom.preston-werner.com/web/2013/08/15/chrome_browser_actions.html"/>
    <updated>2013-08-15T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/08/15/chrome_browser_actions</id>
+   <id>http://tom.preston-werner.com/web/2013/08/15/chrome_browser_actions</id>
    <content type="html">&lt;p&gt;之前帮一个朋友做了一个自动调表的插件,自我感觉做的其烂无比。。。&lt;br/&gt;
 但好歹也算是对javascript和chrome的开发有点小入门了,所以决定最近还是抽点时间看看文档和别人的源码，这样以后好歹能做点很酷的前端小插件了。&lt;/p&gt;
 
@@ -116,9 +162,9 @@ ctrl+x ctrl+k complete with dicitonary&lt;/p&gt;
  
  <entry>
    <title>与P4G一起的六个月</title>
-   <link href="http://tom.preston-werner.com/2013/08/10/finish_p4g.html"/>
+   <link href="http://tom.preston-werner.com/game/2013/08/10/finish_p4g.html"/>
    <updated>2013-08-10T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/08/10/finish_p4g</id>
+   <id>http://tom.preston-werner.com/game/2013/08/10/finish_p4g</id>
    <content type="html">&lt;p&gt;今天是把P4G通关的日子&lt;br/&gt;
 特地翻了一下日历,六个月之前的一个晚上，把P4G带回了家，当时手头的游戏要么已通，要么无聊，于是冲着psv平台排名第一的名头入手了P4G。一方面是不想停止游戏的进程，另一方面是打法一下年前一个周夜晚的时间。&lt;br/&gt;
 刚开始是狂热了一阵，以至于在我开始年假之前就有十个小时的游戏时间了。但是现在回想一下原因只不过是刚开始的兴趣了，并不是传说中的“引人入胜的剧情”。&lt;br/&gt;
@@ -129,9 +175,9 @@ ctrl+x ctrl+k complete with dicitonary&lt;/p&gt;
  
  <entry>
    <title>不在状态</title>
-   <link href="http://tom.preston-werner.com/2013/07/09/tired.html"/>
+   <link href="http://tom.preston-werner.com/daily_record/2013/07/09/tired.html"/>
    <updated>2013-07-09T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/09/tired</id>
+   <id>http://tom.preston-werner.com/daily_record/2013/07/09/tired</id>
    <content type="html">&lt;p&gt;最近莫名其妙的累，感觉身体完全不在状态。&lt;br/&gt;
 大约是自行车丢了然后我就失去了唯一的锻炼途径（如果这能称之为锻炼的话）了的缘故。晚上跟老妈打电话我妈还在电话那头边吃饭边咕噜咕噜的说“你晚上下班回来了就别对着电脑了，出去跑跑锻炼锻炼，我告诉你啊，年轻的时候一定要注意身体，咕噜咕噜。。。”。&lt;br/&gt;
 最近深感对于我这样的普通人听长辈话的重要性，这里立文章为誓，以后每晚跑步半小时，来拯救我不在状态的身体。&lt;/p&gt;
@@ -140,9 +186,9 @@ ctrl+x ctrl+k complete with dicitonary&lt;/p&gt;
  
  <entry>
    <title>java enum singleton and related safe problems</title>
-   <link href="http://tom.preston-werner.com/2013/07/06/java_enum_singleton_and_reflection_attack.html"/>
+   <link href="http://tom.preston-werner.com/language_related/2013/07/06/java_enum_singleton_and_reflection_attack.html"/>
    <updated>2013-07-06T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/06/java_enum_singleton_and_reflection_attack</id>
+   <id>http://tom.preston-werner.com/language_related/2013/07/06/java_enum_singleton_and_reflection_attack</id>
    <content type="html">&lt;p&gt;晚上在stackoverflow上闲晃，查找google的java库的相关信息的时候，看到了用enum singleton单例的写法,就顺便花时间了解了一下几个单例:&lt;br/&gt;
 单例要保证的是一个进程只有一个实例，一般性的写法是&lt;/p&gt;
 
@@ -199,9 +245,9 @@ enum Singleton {
  
  <entry>
    <title>中国国民性演变历程读后感</title>
-   <link href="http://tom.preston-werner.com/2013/07/06/book-review.html"/>
+   <link href="http://tom.preston-werner.com/paper_room/2013/07/06/book-review.html"/>
    <updated>2013-07-06T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/06/book-review</id>
+   <id>http://tom.preston-werner.com/paper_room/2013/07/06/book-review</id>
    <content type="html">&lt;h2&gt;前面的话&lt;/h2&gt;
 
 &lt;p&gt;坐在这里写这个东西的时候有点小小的得瑟掺杂着淡淡地愧疚。。。&lt;br/&gt;
@@ -270,9 +316,9 @@ enum Singleton {
  
  <entry>
    <title>不吹会死</title>
-   <link href="http://tom.preston-werner.com/2013/07/05/two_blogs.html"/>
+   <link href="http://tom.preston-werner.com/paper_room/2013/07/05/two_blogs.html"/>
    <updated>2013-07-05T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/05/two_blogs</id>
+   <id>http://tom.preston-werner.com/paper_room/2013/07/05/two_blogs</id>
    <content type="html">&lt;p&gt;好吧，本来这将会是一篇痛心疾首的自省文，可以这是早上的构想，一个小时前发生的一切已经不可阻挡的把该文的主题掰弯成了吐槽文，历史的车辙啊，碾压吧。。。。。&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -290,9 +336,9 @@ enum Singleton {
  
  <entry>
    <title>osx下编译so的困难记录</title>
-   <link href="http://tom.preston-werner.com/2013/07/04/g%2B%2B-things2.html"/>
+   <link href="http://tom.preston-werner.com/mac/2013/07/04/g%2B%2B-things2.html"/>
    <updated>2013-07-04T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/04/g++-things2</id>
+   <id>http://tom.preston-werner.com/mac/2013/07/04/g++-things2</id>
    <content type="html">&lt;p&gt;昨天一度以为那个模块编好了就一劳永逸了，结果今天早上到了之后又悲剧的发现还有另外一个东西要编译，sigh，为了工作正常展开，为了不倒退到ubuntu时代，只能上了。&lt;/p&gt;
 
 &lt;p&gt;首先遇到的问题是一个文件中用了SOCK_NONBLOCKING，翻了一下socket的manual, 发现果然没有（当时狗眼瞎了，没有看到赫然印着的&lt;font color=&quot;red&quot;&gt;BSD system calls manual&lt;/font&gt;）, 还在傻乎乎的想，是不是我g++版本的问题，导致没有这个东东呢。。。捂脸。。。&lt;br/&gt;
@@ -320,9 +366,9 @@ enum Singleton {
  
  <entry>
    <title>osx下编译dylib的知识记录</title>
-   <link href="http://tom.preston-werner.com/2013/07/03/g%2B%2B-things.html"/>
+   <link href="http://tom.preston-werner.com/mac/2013/07/03/g%2B%2B-things.html"/>
    <updated>2013-07-03T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/03/g++-things</id>
+   <id>http://tom.preston-werner.com/mac/2013/07/03/g++-things</id>
    <content type="html">&lt;p&gt;上午开个大半个上午的会&lt;br/&gt;
 下午本想针对要做的事儿写出个初步的模型来，结果光是环境就折腾了大半天，万恶的移植
 遇到的问题主要有：&lt;/p&gt;
@@ -352,9 +398,9 @@ libevent提供了一组应用程序编程接口（API），让程式设计师可
  
  <entry>
    <title>日参省乎己-07-22</title>
-   <link href="http://tom.preston-werner.com/2013/07/02/self-thinking.html"/>
+   <link href="http://tom.preston-werner.com/daily_record/2013/07/02/self-thinking.html"/>
    <updated>2013-07-02T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/02/self-thinking</id>
+   <id>http://tom.preston-werner.com/daily_record/2013/07/02/self-thinking</id>
    <content type="html">&lt;p&gt;刚刚洗澡的时候突然想到了近两天闲暇时光的所作所为&lt;br/&gt;
 往往是阳光烂漫的上午或者是昏昏欲睡的午后，红茶一杯，转椅一柄，关键词二三，然后就是漫无目的的扫荡相关的技术文章。&lt;br/&gt;
 这样其实是不对滴， 原因有下：&lt;/p&gt;
@@ -372,9 +418,9 @@ libevent提供了一组应用程序编程接口（API），让程式设计师可
  
  <entry>
    <title>java里的classloader</title>
-   <link href="http://tom.preston-werner.com/2013/07/02/classloader.html"/>
+   <link href="http://tom.preston-werner.com/language_related/2013/07/02/classloader.html"/>
    <updated>2013-07-02T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/02/classloader</id>
+   <id>http://tom.preston-werner.com/language_related/2013/07/02/classloader</id>
    <content type="html">&lt;h1&gt;java的classloader&lt;/h1&gt;
 
 &lt;h2&gt;基本概念&lt;/h2&gt;
@@ -406,9 +452,9 @@ jvm运行的时候，用到了三个classloader:&lt;/p&gt;
  
  <entry>
    <title>dataFu印象</title>
-   <link href="http://tom.preston-werner.com/2013/07/01/datafu.html"/>
+   <link href="http://tom.preston-werner.com/data_gunner/2013/07/01/datafu.html"/>
    <updated>2013-07-01T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/07/01/datafu</id>
+   <id>http://tom.preston-werner.com/data_gunner/2013/07/01/datafu</id>
    <content type="html">&lt;p&gt;datafu是linkedin（虽然我现在还没用过。。。）内部用到的一个pig udf的集合，稳定，经过良好的测试。&lt;br/&gt;
 主要用于大规模数据挖掘和数据统计。&lt;br/&gt;
 好吧，以上是官方说法，我花了一点时间扫了一下里面的udf（&lt;a href=&quot;http://linkedin.github.io/datafu/docs/javadoc/&quot;&gt;javadoc在这里&lt;/a&gt;，里面的东西好少），用途最大的大约是datafu.pig.bags包和datafu.pig.bags.sets里面的函数了，前者是针对bag类型的一些常见操作，后者弥补了pig中没有set操作的缺陷，虽然只有intersetc和union两个函数&lt;/p&gt;
@@ -424,9 +470,9 @@ jvm运行的时候，用到了三个classloader:&lt;/p&gt;
  
  <entry>
    <title>Jpype的一些事儿</title>
-   <link href="http://tom.preston-werner.com/2013/06/22/introduction-to-jpype.html"/>
+   <link href="http://tom.preston-werner.com/language_related/2013/06/22/introduction-to-jpype.html"/>
    <updated>2013-06-22T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/06/22/introduction-to-jpype</id>
+   <id>http://tom.preston-werner.com/language_related/2013/06/22/introduction-to-jpype</id>
    <content type="html">&lt;h1&gt;Jpype的一些事儿&lt;/h1&gt;
 
 &lt;p&gt;Jpype提供了python访问java代码的能力，但是实现上不同于Jython语言（没错，这货是门语言），Jpype只是一个库。&lt;br/&gt;
@@ -594,9 +640,9 @@ JNI就是Java Native Interface, 即可以实现Java调用本地库, 也可以实
  
  <entry>
    <title>hadoop源码阅读-configuration</title>
-   <link href="http://tom.preston-werner.com/2013/06/22/hadoop-configuration.html"/>
+   <link href="http://tom.preston-werner.com/data_gunner/2013/06/22/hadoop-configuration.html"/>
    <updated>2013-06-22T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/06/22/hadoop-configuration</id>
+   <id>http://tom.preston-werner.com/data_gunner/2013/06/22/hadoop-configuration</id>
    <content type="html">&lt;h1&gt;configuration&lt;/h1&gt;
 
 &lt;p&gt;实现了Interable&amp;lt;Map.Entry&amp;lt;String, String&gt;&gt;接口和Writable接口&lt;/p&gt;
@@ -746,9 +792,9 @@ hashcode的使用是为了保证随即性。&lt;/p&gt;
  
  <entry>
    <title>博客动起来了</title>
-   <link href="http://tom.preston-werner.com/2013/06/13/first-artical.html"/>
+   <link href="http://tom.preston-werner.com/daily_record/2013/06/13/first-artical.html"/>
    <updated>2013-06-13T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/06/13/first-artical</id>
+   <id>http://tom.preston-werner.com/daily_record/2013/06/13/first-artical</id>
    <content type="html">&lt;h2&gt;博客动起来了&lt;/h2&gt;
 
 &lt;p&gt;话说终于让博客动起来了。。。时隔产生这个想法n个月之后&lt;br/&gt;
@@ -760,9 +806,9 @@ hashcode的使用是为了保证随即性。&lt;/p&gt;
  
  <entry>
    <title>本月书单</title>
-   <link href="http://tom.preston-werner.com/2013/06/05/booklist-of-June.html"/>
+   <link href="http://tom.preston-werner.com/booklist/2013/06/05/booklist-of-June.html"/>
    <updated>2013-06-05T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/2013/06/05/booklist-of-June</id>
+   <id>http://tom.preston-werner.com/booklist/2013/06/05/booklist-of-June</id>
    <content type="html">&lt;h2&gt;本月书单&lt;/h2&gt;
 
 &lt;p&gt;1、中国国民性演变历程&lt;/p&gt;

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: java enum singleton and related safe problems 
+category: language_related
 ---
 
 晚上在stackoverflow上闲晃，查找google的java库的相关信息的时候，看到了用enum singleton单例的写法,就顺便花时间了解了一下几个单例:  

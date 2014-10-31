@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 中国国民性演变历程读后感
+category: paper_room
 ---
 ##前面的话
 坐在这里写这个东西的时候有点小小的得瑟掺杂着淡淡地愧疚。。。  

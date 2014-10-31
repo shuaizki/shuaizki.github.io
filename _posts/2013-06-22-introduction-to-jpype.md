@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Jpype的一些事儿
+category: language_related
 ---
 #Jpype的一些事儿
 

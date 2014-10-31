@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 博客动起来了
+category: daily_record
 ---
 博客动起来了
 ---

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 本月书单
+category: booklist
 ---
 本月书单
 ---
