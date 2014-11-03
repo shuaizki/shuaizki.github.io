@@ -4,13 +4,228 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2014-10-31T22:13:27+08:00</updated>
+ <updated>2014-11-03T11:38:53+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Hamcrest_and_junit</title>
+   <link href="http://tom.preston-werner.com/java/2014/11/03/hamcrest_and_junit.html"/>
+   <updated>2014-11-03T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/java/2014/11/03/hamcrest_and_junit</id>
+   <content type="html">&lt;h1&gt;Junit and Hamcrest&lt;/h1&gt;
+
+&lt;h3&gt;从Hamcrest开始&lt;/h3&gt;
+
+&lt;p&gt;wiki了一下hamcrest和项目的tutorial，发现是个很不错的小框架。&lt;/p&gt;
+
+&lt;p&gt;从历史说起的话，第一代单元测试框架提供了断言表达式&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;assert(x == y) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是这样对错误信息很不友好，于是第二代单元测试框架提供了一组测试语句&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;assert_equal(x , y)
+assert_not_equal(x, y)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样对测试是友好了，但是测试语句的数量暴涨&lt;/p&gt;
+
+&lt;p&gt;于是第三代单元测试框架就使用如hamcrest的库来支持assert_that的操作&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;assert_that(x, equals(y))
+assert_that(x, is_not(equals(y))) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样就能优美的输出错误信息。并且通过组合不同的匹配器，可以获得极大的拓展性。&lt;/p&gt;
+
+&lt;p&gt;匹配器封装了一种匹配操作，可以是简单的equals操作，也可以是原来几种封装器的再封装，譬如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Matcher a = equals(10)
+Matcher b = greatThan(0)
+Matcher c = allOf(a, b)
+
+Matcher a1 = equals(-20)
+Matcher b1 = lessThan(0)
+Matcher c1 = allOf(a1, b1)
+
+Matcher d = anyOf(c, c1)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;a, b, a1, b1 就是比较简单的匹配器，c,c1,d就是通过其他封装器组合而成的。&lt;/p&gt;
+
+&lt;p&gt;我用的junit-4.10.jar已经集成了hamcrest。至于具体是用独立的hamcrest，还是junit集成版的，后面用用看喽。&lt;/p&gt;
+
+&lt;h3&gt;Junit&lt;/h3&gt;
+
+&lt;p&gt;简单的过一遍junit的文档，记录一些自己不熟悉的东西。&lt;/p&gt;
+
+&lt;h4&gt;method order&lt;/h4&gt;
+
+&lt;p&gt;从4.11版本开始，可以指定固定的method顺序了。但是仍然不能指定test执行的顺序。目前只有两种固定顺序。 通过给测试类制定@FixMethodOrder&lt;/p&gt;
+
+&lt;p&gt;@FixMethodOrder(MethodSorters.JVM): 返回jvm给的方法顺序，所以每次跑的顺序可能不一样。&lt;/p&gt;
+
+&lt;p&gt;@FixMethodOrder(MethodSorters.NAME_ASCENDING): Sorts the test methods by method name, in lexicographic order.&lt;/p&gt;
+
+&lt;h4&gt;Rule&lt;/h4&gt;
+
+&lt;p&gt;以前从没用过也不知道Rule这个annonation。 &lt;br/&gt;
+Rule是用来为了给一个类中所有的测试增加某种功能的。比如说ExternalResource这个类，如果希望测试类里面的每一个测试都能申请到某数据库连接，然后在测试完之后释放这个连接的话，就可以自己实现一个ExternalResource类来完成。这样就能够不使用Before和After了。&lt;/p&gt;
+
+&lt;p&gt;比较带感的是:&lt;/p&gt;
+
+&lt;p&gt;TemporaryFolder 能够为测试创建临时文件或文件夹，测试函数结束后会删除&lt;/p&gt;
+
+&lt;p&gt;ExternalResource 抽象类，实现了before和after之后，就能在测试函数前后执行这两个函数了&lt;/p&gt;
+
+&lt;p&gt;ErrorCollector 收集throwble，然后完成测试后一次性报告所有的error&lt;/p&gt;
+
+&lt;p&gt;TestWatcher  主要是测试过程记录作用，starting finished功能跟Before After相近，成功的case会进入successed，失败的case会进入failed，还有一个apply函数，暂时不知道是干什么的。&lt;/p&gt;
+
+&lt;p&gt;TimeOutRule  类如其名&lt;/p&gt;
+
+&lt;p&gt;还有就是自定义的了&lt;/p&gt;
+
+&lt;h4&gt;Exception test&lt;/h4&gt;
+
+&lt;p&gt;为了保证程序和预期的那样抛出异常，所以要有异常测试。&lt;/p&gt;
+
+&lt;p&gt;如果是简单的小测试，可以用annotation参数来完成。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Test(expected= IndexOutOfBoundsException.class) 
+public void empty() { 
+     new ArrayList&amp;lt;Object&amp;gt;().get(0); 
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还有一种方法就是用上面提到的Rule, ExpectedException类&lt;/p&gt;
+
+&lt;h4&gt;junit matcher&lt;/h4&gt;
+
+&lt;p&gt;除了junit自带的和hamcrest自带的，还有一些第三方的&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Excel spreadsheet matchers&lt;/li&gt;
+&lt;li&gt;JSON matchers&lt;/li&gt;
+&lt;li&gt;XML/XPath matchers&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;h4&gt;Ignore a test&lt;/h4&gt;
+
+&lt;p&gt;加上ignore annonation就行了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Ignore(&quot;Test is ignored as a demonstration&quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;timeout&lt;/h4&gt;
+
+&lt;p&gt;前面讲到Rule的时候有说道，有TimeOut rule，这个是对一个测试类里面的所有test适用的，还有一个对单个test作用的timeout的设置&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@Test(timeout=1000)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;multithread / concurrent test&lt;/h4&gt;
+
+&lt;p&gt;给出一篇文章里面的测试方法, assertConcurrent，来源在&lt;a href=&quot;http://www.planetgeek.ch/2009/08/25/how-to-find-a-concurrency-bug-with-java/&quot;&gt;assertConcurrent&lt;/a&gt;，完整的实现不长，这里可以大致说说实现的方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;   public static void assertConcurrent(final String message, final List&amp;lt;? extends Runnable&amp;gt; runnables, final int maxTimeoutSeconds) throws InterruptedException {
+      final int numThreads = runnables.size();
+      final List&amp;lt;Throwable&amp;gt; exceptions = Collections.synchronizedList(new ArrayList&amp;lt;Throwable&amp;gt;());
+      final ExecutorService threadPool = Executors.newFixedThreadPool(numThreads);
+      try {
+        final CountDownLatch allExecutorThreadsReady = new CountDownLatch(numThreads);
+        final CountDownLatch afterInitBlocker = new CountDownLatch(1);
+        final CountDownLatch allDone = new CountDownLatch(numThreads);
+        for (final Runnable submittedTestRunnable : runnables) {
+          threadPool.submit(new Runnable() {
+            public void run() {
+              allExecutorThreadsReady.countDown();
+              try {
+                afterInitBlocker.await();
+                submittedTestRunnable.run();
+              } catch (final Throwable e) {
+                exceptions.add(e);
+              } finally {
+                allDone.countDown();
+              }
+            }
+          });
+        }
+        // wait until all threads are ready
+        assertTrue(&quot;Timeout initializing threads! Perform long lasting initializations before passing runnables to assertConcurrent&quot;, allExecutorThreadsReady.await(runnables.size() * 10, TimeUnit.MILLISECONDS));
+        // start all test runners
+        afterInitBlocker.countDown();
+        assertTrue(message +&quot; timeout! More than&quot; + maxTimeoutSeconds + &quot;seconds&quot;, allDone.await(maxTimeoutSeconds, TimeUnit.SECONDS));
+      } finally {
+        threadPool.shutdownNow();
+      }
+      assertTrue(message + &quot;failed with exception(s)&quot; + exceptions, exceptions.isEmpty());
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大致讲解下原理，首先CountDownLatch是java concurrent包里面的一个同步工具，用一个整数初始化，初始化之后调用await()是会持续block那里的，通过另外的线程不断的调用countDown，调用输入整数个countDown之后，之前block在await的线程会继续运行。&lt;/p&gt;
+
+&lt;p&gt;上面的代码建立了一个线程池，把输入的Runnable封装成Runnalbe提交到线程池里，同时保证所有的线程都不在运行，记录有多少Runnable已经被提交了，有多少Runnable已经完成了。&lt;/p&gt;
+
+&lt;p&gt;然后assert所有的线程在规定时间内都提交完成了。开始启动这些线程，再最后确保这些线程在规定时间内完成。当然，运行过程中所产生的exception都被记录在一个list中，最后assert有没有产生excpetion。&lt;/p&gt;
+
+&lt;p&gt;基本上完成了测试的需求，美中不足的是如果有timeout或者exeption，单从测试的结果很难定位timeout或者exception的runnalbe。有改进的空间。&lt;/p&gt;
+
+&lt;h4&gt;continuous test&lt;/h4&gt;
+
+&lt;p&gt;The tests are run automatically after every change, usually in an intelligent order so that newest tests or most recently failed tests are run first。&lt;/p&gt;
+
+&lt;p&gt;看起来很不错。有个叫infinitest（无尽的测试.....好冷）。可以放到intellij idea上面运行。&lt;/p&gt;
+
+&lt;p&gt;至于infinitest的使用可以放到后面一个博客上面写&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>记一件蛋疼的事儿</title>
+   <link href="http://tom.preston-werner.com/paper_room/2014/10/31/dt_thing.html"/>
+   <updated>2014-10-31T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/paper_room/2014/10/31/dt_thing</id>
+   <content type="html">&lt;p&gt;某个午后，mac突然陷入龟速状态，猜测是fusion drive的问题，无奈100多天没有time machine备份，没有底气格盘恢复，然后就扯出了一系列非常蛋疼的事儿。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;  花了很长时间搞了搞最近的备份。&lt;br/&gt;
+  目前的状况是，备份是ok了，但是我想升级操作系统的时候遇到了问题，于是想先把重要的东西迁移到新的mac上面，然后自己再慢慢搞老的电脑，大不了割了装个新系统，然后再从time machine恢复。傻了吧唧的买了一根thunderbolt cable，今天终于到了，两个电脑连到一起的时候我傻眼了，尼玛坑爹呢，根本不能迁移好么，用网络迁移慢的要死，不用网络迁移压根找不到自己的目录。&lt;br/&gt;
+  而且新的电脑在我接二连三的蹂躏之下系统里多了一些乱七八糟的东西，怒删之！ 我要重新做系统！！&lt;/p&gt;
+
+&lt;p&gt;  迁移这条支线是不可能了，等我终于冷静下来之后，我开始一边备份自己的照片，一边考虑数据存储的问题，到底怎样的数据存储才是让自己放心的？&lt;/p&gt;
+
+&lt;p&gt;  ###iphoto
+  一个iphoto图库放在time machine里？ 不够放心，万一哪天升级了操作系统发现iphoto图库读不出来怎么办，所以要把所有照片导出单独存一份才安心。&lt;br/&gt;
+  我担心的数据还有哪些？
+  ###music &lt;br/&gt;
+  音乐不多，而且大部分在云端。所以这个ok的。&lt;/p&gt;
+
+&lt;p&gt;  ###code
+  代码，折腾过的不少，但是真正有用的不多，不过这部分可以先不管三七二十一的放到github上面，顺便让那些半途而废的东西暴露在阳光下，鞭策一下自己。&lt;/p&gt;
+
+&lt;p&gt;  ###account
+  软件和账号，刚刚check了一下1password，发现经过之前的折腾，数据文件没了，不过也没关系。。。。反正也没放多少东西在里面，下面可以把这个作为主力，然后经常备份，至于是备份到dropbox里还是其他地方，到时候再说吧。&lt;/p&gt;
+
+&lt;p&gt;  ###dmgs.....
+  软件的话，说起来有些不光彩，有些很好用的软件没有购买正版，破解版的资源又不是那么好找，所以这部分丢了应该比较蛋疼。第一怪自己思想觉悟不够高，无耻的用盗版；第二怪自己没留后路，至少也备份一下当时那些软件的破解方法......第三，经过这次我尽量买正版。&lt;/p&gt;
+
+&lt;p&gt;  ###文字性的东西
+  如果还让我想比较心疼的东西，大约就是一些自己写的东西吧，平时虽然用的软件比较杂，mou, omni outliner, evernote，但是整理起来还是比较方便的，迁移的时候想到了evernote的好，但是evernote的编辑体验确实不怎么样。这块就整理一下能写成博客的就放在博客上，不能弄成博客的就打包下放在evernote里面。弄个applescript脚本周期性的整理应该还是很容易的。&lt;/p&gt;
+
+&lt;h2&gt;  之后呢？&lt;/h2&gt;
+
+&lt;p&gt;  毕竟生活还是要继续，老的mac看起来状态正常了点，新的mac尸骨未寒，处于没有操作系统的状态。冷静了一番之后决定还是别那么冲动了，还是先把自己的习惯整理好再去整理这两台电脑吧。新mac今晚装了系统，明天试试能不能从time machine中恢复出iphoto图库来，如果能那就升级到yosemite，看看能不能恢复出iphoto。老mac就一点点慢慢整理吧，等我觉得各项数据足够安全可恢复了，就割了重装，但是决定再也用坑爹的fusion drive了（这次不能直接升级yosemite就是因为它）。&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>How to disable output to console</title>
