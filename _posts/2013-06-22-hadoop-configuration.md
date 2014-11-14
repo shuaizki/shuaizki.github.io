@@ -1,7 +1,7 @@
 ---
 layout: post
 title: hadoop源码阅读-configuration
-category: data_gunnar
+category: data
 stared: true
 ---
 
