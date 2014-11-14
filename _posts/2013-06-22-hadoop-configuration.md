@@ -1,8 +1,7 @@
 ---
 layout: post
-title: hadoop源码阅读-configuration
+title: hadoop源码阅读 configuration
 category: data
-stared: true
 ---
 
 #configuration

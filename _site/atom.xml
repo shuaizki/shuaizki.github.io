@@ -4,13 +4,147 @@
  <title>Tom Preston-Werner</title>
  <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
  <link href="http://tom.preston-werner.com/"/>
- <updated>2014-11-03T11:38:53+08:00</updated>
+ <updated>2014-11-14T09:44:54+08:00</updated>
  <id>http://tom.preston-werner.com/</id>
  <author>
    <name>Tom Preston-Werner</name>
    <email>tom@mojombo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>One jar application</title>
+   <link href="http://tom.preston-werner.com/java/2014/11/14/one_jar_application.html"/>
+   <updated>2014-11-14T00:00:00+08:00</updated>
+   <id>http://tom.preston-werner.com/java/2014/11/14/one_jar_application</id>
+   <content type="html">&lt;h1&gt;One jar application&lt;/h1&gt;
+
+&lt;p&gt;怎么把java应用依赖的库和java应用一起打包发布呢？&lt;/p&gt;
+
+&lt;h3&gt;naive的做法&lt;/h3&gt;
+
+&lt;p&gt;我一度天真的以为不借助任何IDE，只要手写就能分分钟生成这么一个东西，于是我对自己的ant脚本稍作修改。成为了下面的样子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;target name=&quot;service&quot; depends=&quot;compile&quot;&amp;gt;
+    &amp;lt;jar destfile=&quot;${basedir}/XX.jar&quot;&amp;gt;
+        &amp;lt;fileset dir=&quot;${basedir}/lib&quot; includes=&quot;*.jar&quot; /&amp;gt;
+        &amp;lt;fileset dir=&quot;${classes.dir}&quot;/&amp;gt;
+        &amp;lt;manifest&amp;gt;
+            &amp;lt;attribute name=&quot;Main-Class&quot; value=&quot;com.cootek.data.Xavier.search.Service&quot;/&amp;gt;
+            &amp;lt;attribute name=&quot;Class-Path&quot; value=&quot;${libs}&quot;/&amp;gt;
+        &amp;lt;/manifest&amp;gt;
+    &amp;lt;/jar&amp;gt;
+&amp;lt;/target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;结果生成了下面的manifest:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Class-Path: ../PiX/cootek/java/lib/asynchbase-1.5.0.jar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这当然不对了!依赖的jar是应该被打包在jar里的，这样的路径怎么可能对呢（我的心里活动），不过这难不倒我ant脚本小达人，用pathconvert轻松解决。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;pathconvert property=&quot;libs&quot; pathsep=&quot; &quot;&amp;gt;
+     &amp;lt;path refid=&quot;library.lib.classpath&quot; /&amp;gt;
+     &amp;lt;flattenmapper/&amp;gt;
+&amp;lt;/pathconvert&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;顺利的生成心目中的class-path，运行的时候傻眼了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ClassNotFound exception
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;后来google了一下才发现，原来是默认的类加载器没有能力从jar-in-jar中加载class，所以想完成任务，必须寻找合适的第三方类加载器来完成这个任务。&lt;/p&gt;
+
+&lt;h3&gt;eclipse style&lt;/h3&gt;
+
+&lt;p&gt;之前的做法是直接用eclipse的export功能，不得不吐槽一下launch configuration, 如果之前没有运行过xx.java的，这个选项是空白的，而且没有任何提示(蛋疼。。。。就不能友好一点吗)。&lt;br/&gt;
+Library handling的话有三种选项:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;extract required libraries 把library中的class文件解压到新的jar里面。这种有概率导致SecurityException.&lt;/li&gt;
+&lt;li&gt;package required libraries 直接扔到新的jar里面。&lt;/li&gt;
+&lt;li&gt;copy required lib into a sub-folder 另外创建一个目录，把需要用到的库文件拷贝进去。&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;三种形式都能自动生成ant脚本，第二种才是我们需要的。&lt;/p&gt;
+
+&lt;p&gt;用第二种方式导出一个xml之后打开，会看到如下内容。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;target name=&quot;create_run_jar&quot;&amp;gt;
+    &amp;lt;jar destfile=&quot;XX.jar&quot;&amp;gt;
+        &amp;lt;manifest&amp;gt;
+            &amp;lt;attribute name=&quot;Main-Class&quot; value=&quot;org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader&quot;/&amp;gt;
+            &amp;lt;attribute name=&quot;Rsrc-Main-Class&quot; value=&quot;com.cootek.data.Xavier.search.Service&quot;/&amp;gt;
+            &amp;lt;attribute name=&quot;Class-Path&quot; value=&quot;.&quot;/&amp;gt;
+            &amp;lt;attribute name=&quot;Rsrc-Class-Path&quot; value=&quot;./ agent-api.jar jetty-all-7.0.2.v20100331.jar/&amp;gt;
+        &amp;lt;/manifest&amp;gt;
+        &amp;lt;zipfileset src=&quot;jar-in-jar-loader.zip&quot;/&amp;gt;
+        &amp;lt;zipfileset dir=&quot;lib&quot; includes=&quot;*.jar&quot;/&amp;gt;
+    &amp;lt;/jar&amp;gt;
+&amp;lt;/target&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;manifest部分生成如下的manifest文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Class-Path: .
+Rsrc-Main-Class: com.cootek.data.Xavier.search.Service
+Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
+Rsrc-Class-Path: ./ agent-api.jar jetty-all-7.0.2.v20100331.jar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们大致能看出，Main-Class是这个jar包的入口，其实是个eclipse自己写的class loader，这个加载器加载Rsrc-Class-Path里jar文件包含的所有class，然后运行rsrc-main-class。
+以上是eclipse生成one-jar的做法。&lt;/p&gt;
+
+&lt;h3&gt;amazing intellij&lt;/h3&gt;
+
+&lt;p&gt;一直一来我对intellij idea这个IDE都是极力宣传的态度，套个vim插件简直是IDE大杀器。在我信心满满的打开intellij之后傻眼了, 为什么我只看到了两个选项？&lt;br/&gt;
+Jar files from libraries&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;extract to target jar&lt;/li&gt;
+&lt;li&gt;copy to the output directory and link via manifest&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;在排除了我打开方式不对的因素之外，我在google上寻求帮助，发现他们好像真的没做这个feature。不得不说，真的非常amazing，就好像在我眼中世界第一好吃的外卖店突然告诉我他们其实不提供打包服务，你只能站着吃完再走一样。&lt;/p&gt;
+
+&lt;h3&gt;one jar&lt;/h3&gt;
+
+&lt;p&gt;这是我在google上找到的另外一个解决方案(感谢google)。One-jar application。&lt;a href=&quot;http://www.ibm.com/developerworks/cn/java/j-onejar/&quot;&gt;用 One-JAR 简化应用程序交付&lt;/a&gt;,这是作者P. Simon Tuffs 在04年的一篇博客，描述了他搭建one-jar的全过程，&lt;a href=&quot;http://one-jar.sourceforge.net/index.php?page=introduction&amp;amp;file=intro&quot;&gt;one-jar application&lt;/a&gt;是项目的主页，由于作者解释的比较详尽，项目的文档比较详实，这里就做个简单的介绍。&lt;/p&gt;
+
+&lt;p&gt;quickstart里面提到，one-jar主要由以下几种使用方式:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;application generator mode 用one-jar-appgen-0.97.jar生成一个项目模板，然后你往里面填东西，如果你的项目已经完成，基本可以忽略这种方式。&lt;/li&gt;
+&lt;li&gt;command-line approach  需要下载 one-jar-boot-0.97.jar, 解压后会生成一些文件夹，你要做的就是把项目包扔到main文件夹里，把依赖库扔到lib文件夹里。然后修改下boot-manifest.mf，最后打包就行了，是最傻瓜式的一种方式。&lt;/li&gt;
+&lt;li&gt;maven approach 用maven生成&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;ant taskdef approach 下载一些包和一来的xml，直接在ant脚本里生成。这个需要下载lib/one-jar-ant-task-0.96.jar，单独拿出one-jar-ant-task.xml，修改下里面的路径，然后用类似的task就能完成了。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;target name=&quot;service&quot; depends=&quot;compile&quot;&amp;gt;
+  &amp;lt;one-jar destfile=&quot;${basedir}/XX.jar&quot;&amp;gt;
+      &amp;lt;main&amp;gt;
+          &amp;lt;fileset dir=&quot;${classes.dir}&quot;/&amp;gt;
+      &amp;lt;/main&amp;gt;
+      &amp;lt;manifest&amp;gt;
+          &amp;lt;attribute name=&quot;One-Jar-Main-Class&quot; value=&quot;com.cootek.data.Xavier.search.Service&quot;/&amp;gt;
+      &amp;lt;/manifest&amp;gt;
+      &amp;lt;lib&amp;gt;
+          &amp;lt;fileset dir=&quot;${basedir}/lib&quot;&amp;gt;
+                &amp;lt;patternset refid=&quot;library.patterns&quot;/&amp;gt;
+          &amp;lt;/fileset&amp;gt;
+      &amp;lt;/lib&amp;gt;
+  &amp;lt;/one-jar&amp;gt;
+  &amp;lt;/target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实生成的jar的目录结构和command-line approach是一样的。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Hamcrest_and_junit</title>
@@ -667,9 +801,9 @@ jvm运行的时候，用到了三个classloader:&lt;/p&gt;
  
  <entry>
    <title>dataFu印象</title>
-   <link href="http://tom.preston-werner.com/data_gunner/2013/07/01/datafu.html"/>
+   <link href="http://tom.preston-werner.com/data/2013/07/01/datafu.html"/>
    <updated>2013-07-01T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/data_gunner/2013/07/01/datafu</id>
+   <id>http://tom.preston-werner.com/data/2013/07/01/datafu</id>
    <content type="html">&lt;p&gt;datafu是linkedin（虽然我现在还没用过。。。）内部用到的一个pig udf的集合，稳定，经过良好的测试。&lt;br/&gt;
 主要用于大规模数据挖掘和数据统计。&lt;br/&gt;
 好吧，以上是官方说法，我花了一点时间扫了一下里面的udf（&lt;a href=&quot;http://linkedin.github.io/datafu/docs/javadoc/&quot;&gt;javadoc在这里&lt;/a&gt;，里面的东西好少），用途最大的大约是datafu.pig.bags包和datafu.pig.bags.sets里面的函数了，前者是针对bag类型的一些常见操作，后者弥补了pig中没有set操作的缺陷，虽然只有intersetc和union两个函数&lt;/p&gt;
@@ -854,10 +988,10 @@ JNI就是Java Native Interface, 即可以实现Java调用本地库, 也可以实
  </entry>
  
  <entry>
-   <title>hadoop源码阅读-configuration</title>
-   <link href="http://tom.preston-werner.com/data_gunner/2013/06/22/hadoop-configuration.html"/>
+   <title>hadoop源码阅读 configuration</title>
+   <link href="http://tom.preston-werner.com/data/2013/06/22/hadoop-configuration.html"/>
    <updated>2013-06-22T00:00:00+08:00</updated>
-   <id>http://tom.preston-werner.com/data_gunner/2013/06/22/hadoop-configuration</id>
+   <id>http://tom.preston-werner.com/data/2013/06/22/hadoop-configuration</id>
    <content type="html">&lt;h1&gt;configuration&lt;/h1&gt;
 
 &lt;p&gt;实现了Interable&amp;lt;Map.Entry&amp;lt;String, String&gt;&gt;接口和Writable接口&lt;/p&gt;
