@@ -1,9 +1,10 @@
 ---
 layout: post
 title: hadoop源码阅读-configuration
-category: data_gunner
+category: data_gunnar
 stared: true
 ---
+
 #configuration
 实现了Interable<Map.Entry<String, String>>接口和Writable接口  
 ##私有变量
