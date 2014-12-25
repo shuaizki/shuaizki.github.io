@@ -16,7 +16,7 @@ category: java
             <fileset dir="${basedir}/lib" includes="*.jar" />
             <fileset dir="${classes.dir}"/>
             <manifest>
-                <attribute name="Main-Class" value="com.cootek.data.Xavier.search.Service"/>
+                <attribute name="Main-Class" value="Service"/>
                 <attribute name="Class-Path" value="${libs}"/>
             </manifest>
         </jar>
@@ -55,7 +55,7 @@ Library handling的话有三种选项:
         <jar destfile="XX.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="com.cootek.data.Xavier.search.Service"/>
+                <attribute name="Rsrc-Main-Class" value="Service"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./ agent-api.jar jetty-all-7.0.2.v20100331.jar/>
             </manifest>
@@ -103,7 +103,7 @@ quickstart里面提到，one-jar主要由以下几种使用方式:
                 <fileset dir="${classes.dir}"/>
             </main>
             <manifest>
-                <attribute name="One-Jar-Main-Class" value="com.cootek.data.Xavier.search.Service"/>
+                <attribute name="One-Jar-Main-Class" value="Service"/>
             </manifest>
             <lib>
                 <fileset dir="${basedir}/lib">
