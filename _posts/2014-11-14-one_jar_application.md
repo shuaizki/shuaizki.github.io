@@ -24,7 +24,7 @@ category: java
 
 结果生成了下面的manifest:  
 
-    Class-Path: ../PiX/cootek/java/lib/asynchbase-1.5.0.jar
+    Class-Path: ../lib/asynchbase-1.5.0.jar
     
 这当然不对了!依赖的jar是应该被打包在jar里的，这样的路径怎么可能对呢（我的心里活动），不过这难不倒我ant脚本小达人，用pathconvert轻松解决。  
 
@@ -67,7 +67,7 @@ Library handling的话有三种选项:
 manifest部分生成如下的manifest文件  
 
     Class-Path: .
-    Rsrc-Main-Class: com.cootek.data.Xavier.search.Service
+    Rsrc-Main-Class: io.shuaizki.github.Service
     Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
     Rsrc-Class-Path: ./ agent-api.jar jetty-all-7.0.2.v20100331.jar
     
